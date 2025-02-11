@@ -1,0 +1,49 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using SimpleChatShared;
+
+namespace SimpleChatBackend.Controllers
+{
+    [Route("api/users")]
+    [ApiController]
+    public class ChatUserController(ChatDbContext context) : ControllerBase
+    {
+        [HttpPost("register")]
+        public IActionResult Register(string name, string email, string password)
+        {
+            if (context.ChatUsers.Any(u => u.Email == email))
+            {
+                return Conflict("Email already in use");
+            }
+            ChatUser user = new ChatUser(name, email, password);
+            context.ChatUsers.Add(user);
+            context.SaveChanges();
+            return Ok(new { Id = user.Id, Token = user.Token });
+        }
+
+        [HttpGet("login")]
+        public IActionResult Login(string email, string password)
+        {
+            password = Hasher.Hash(password);
+            ChatUser? user = context.ChatUsers.FirstOrDefault(u =>
+                u.Email == email && u.Password == password
+            );
+            if (user == null)
+            {
+                return Unauthorized("incorrect email or password");
+            }
+            return Ok(new { Id = user.Id, Token = user.Token });
+        }
+
+        [HttpGet("validate")]
+        public IActionResult Validate(int id, string token)
+        {
+            ChatUser? user = context.ChatUsers.FirstOrDefault(u => u.Id == id && u.Token == token);
+            if (user == null)
+            {
+                return Unauthorized("invalid token");
+            }
+            return Ok();
+        }
+    }
+}
