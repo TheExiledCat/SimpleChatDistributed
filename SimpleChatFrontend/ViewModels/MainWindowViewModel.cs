@@ -16,7 +16,6 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             Content = viewModel;
         };
-
         // change to HomeView
         router.GoTo<LoginViewModel>();
     }

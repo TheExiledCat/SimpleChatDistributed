@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using dotenv.net;
 
 namespace SimpleChatFrontend;
 

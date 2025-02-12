@@ -1,12 +1,16 @@
 using System;
 using System.Linq;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.SimpleRouter;
+using dotenv.net;
+using Dumpify;
 using Microsoft.Extensions.DependencyInjection;
+using SimpleChatFrontend.Helpers;
 using SimpleChatFrontend.ViewModels;
 using SimpleChatFrontend.Views;
 
@@ -14,6 +18,8 @@ namespace SimpleChatFrontend;
 
 public partial class App : Application
 {
+    public static Window Toplevel;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -23,15 +29,14 @@ public partial class App : Application
     {
         // In this example we use Microsoft DependencyInjection (instead of ReactiveUI / Splat)
         // Splat would also work, just use the according methods
+        DotEnv.Load();
+        LocalStorage.Initialize();
         IServiceProvider services = ConfigureServices();
         var mainViewModel = services.GetRequiredService<MainWindowViewModel>();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow { DataContext = mainViewModel };
-        }
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-        {
-            singleViewPlatform.MainView = new MainWindow { DataContext = mainViewModel };
+            Toplevel = desktop.MainWindow;
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -48,6 +53,7 @@ public partial class App : Application
         // Add the ViewModels as a service (Main as singleton, others as transient)
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<LoginViewModel>();
+        services.AddTransient<HomeViewModel>();
         return services.BuildServiceProvider();
     }
 

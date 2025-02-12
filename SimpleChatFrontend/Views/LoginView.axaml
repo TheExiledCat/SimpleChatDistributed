@@ -3,9 +3,53 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:vm="using:SimpleChatFrontend.ViewModels"
+  xmlns:local="using:SimpleChatFrontend.Controls"
   mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+  x:DataType="vm:LoginViewModel"
   x:Class="SimpleChatFrontend.Views.LoginView">
-  <Grid HorizontalAlignment="Stretch">
-    <Button HorizontalAlignment="Center">Hallo</Button>
+  <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="2*"></ColumnDefinition>
+      <ColumnDefinition Width="*"></ColumnDefinition>
+      <ColumnDefinition Width="2*"></ColumnDefinition>
+    </Grid.ColumnDefinitions>
+    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="1"
+    >
+      <StackPanel IsVisible="{Binding RegisterMode}">
+        <Label>Name</Label>
+
+        <TextBox Watermark="Name" Text="{Binding Name}">
+
+        </TextBox>
+      </StackPanel>
+      <StackPanel>
+        <Label>Email</Label>
+        <TextBox Watermark="Email" Text="{Binding Email}">
+        </TextBox>
+      </StackPanel>
+      <StackPanel>
+        <Label>Password</Label>
+        <TextBox Watermark="Password" PasswordChar="*" Text="{Binding Password}">
+
+        </TextBox>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20"
+        IsVisible="{Binding !RegisterMode}">
+        <Button HorizontalAlignment="Left" Margin="20,0" Command="{Binding ToggleRegisterMode}">
+          Register</Button>
+        <Button HorizontalAlignment="Right" Margin="20,0" Command="{Binding SubmitLogin}">Login</Button>
+
+
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20"
+        IsVisible="{Binding RegisterMode}">
+        <Button HorizontalAlignment="Left" Margin="20,0" Command="{Binding ToggleRegisterMode}">
+          Cancel</Button>
+        <Button HorizontalAlignment="Right" Margin="20,0" Command="{Binding Register}">Register</Button>
+
+      </StackPanel>
+
+
+    </StackPanel>
   </Grid>
 </UserControl>
