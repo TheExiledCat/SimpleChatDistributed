@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleChatShared;
+using SimpleChatShared.DTOS;
 
 namespace SimpleChatBackend.Controllers
 {
@@ -18,7 +19,7 @@ namespace SimpleChatBackend.Controllers
             ChatUser user = new ChatUser(name, email, password);
             context.ChatUsers.Add(user);
             context.SaveChanges();
-            return Ok(new { Id = user.Id, Token = user.Token });
+            return Ok("user registered succesfully");
         }
 
         [HttpGet("login")]
@@ -32,7 +33,7 @@ namespace SimpleChatBackend.Controllers
             {
                 return Unauthorized("incorrect email or password");
             }
-            return Ok(new { Id = user.Id, Token = user.Token });
+            return Ok(new LoginDTO { Id = user.Id, Token = user.Token });
         }
 
         [HttpGet("validate")]
