@@ -46,5 +46,31 @@ namespace SimpleChatBackend.Controllers
             }
             return Ok();
         }
+
+        [HttpGet("id/{id}")]
+        [RequireLogin]
+        public IActionResult Get(int id, string token)
+        {
+            ChatUser? user = context.ChatUsers.FirstOrDefault(u => u.Id == id && u.Token == token);
+            return user == null ? BadRequest("user id invalid") : Ok(user);
+        }
+
+        [HttpPost("add/{email}")]
+        [RequireLogin]
+        public IActionResult AddContact(string email, int id, string token)
+        {
+            ChatUser? current = context.ChatUsers.FirstOrDefault(c =>
+                c.Id == id && c.Token == token
+            );
+            if (current == null)
+            {
+                return Unauthorized("You are not logged in or your user account was deleted");
+            }
+            ChatUser? contact = context.ChatUsers.FirstOrDefault(c => c.Email == email);
+            if (contact == null)
+            {
+                return StatusCode(409, "Contact email not found");
+            }
+        }
     }
 }

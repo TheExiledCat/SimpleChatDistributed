@@ -8,4 +8,5 @@ public class ChatContact
     public ChatUser UserA { get; set; }
     public ChatUser UserB { get; set; }
     public DateTime ContactsSince { get; set; }
+    public ChatRoom PrivateRoom { get; set; } = new ChatRoom();
 }
