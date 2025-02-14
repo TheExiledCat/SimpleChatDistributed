@@ -83,7 +83,7 @@ public static class LocalStorage
             int equalsIndex = line.IndexOf("=");
             string key = line.Substring(0, equalsIndex);
             string value = line.Substring(equalsIndex + 1);
-            kvps.Add(key, value);
+            kvps.Add(key, value.Trim('\"'));
         }
         return kvps;
     }

@@ -1,8 +1,89 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl
+  x:Class="SimpleChatFrontend.Views.HomeView"
+  xmlns="https://github.com/avaloniaui"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-  x:Class="SimpleChatFrontend.Views.HomeView">
-  Welcome to Avalonia!
+  d:DesignHeight="450"
+  d:DesignWidth="800"
+  mc:Ignorable="d">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="25*">
+
+      </ColumnDefinition>
+      <ColumnDefinition Width="75*">
+
+      </ColumnDefinition>
+    </Grid.ColumnDefinitions>
+
+    <Grid Grid.Column="0" Margin="0,0,10,0" Background="Green">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="18*"></RowDefinition>
+        <RowDefinition Height="2*"></RowDefinition>
+        <RowDefinition Height="74*"></RowDefinition>
+        <RowDefinition Height="2*"></RowDefinition>
+
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="5*"></ColumnDefinition>
+        <ColumnDefinition Width="90*"></ColumnDefinition>
+        <ColumnDefinition Width="5*"></ColumnDefinition>
+      </Grid.ColumnDefinitions>
+      <Grid Grid.Row="0" Background="Blue" Grid.Column="1" Name="TopButtonGrid" Margin="0,30"
+        HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*"></ColumnDefinition>
+          <ColumnDefinition Width="1*"></ColumnDefinition>
+          <ColumnDefinition Width="1*"></ColumnDefinition>
+          <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="3*"></RowDefinition>
+          <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Name="AddContactButton" Grid.Column="0" HorizontalAlignment="Stretch" Grid.Row="0"
+          Margin="10,0" VerticalAlignment="Stretch">
+          <Viewbox HorizontalAlignment="Stretch">
+            <Label>Add Contact</Label>
+          </Viewbox>
+        </Button>
+
+        <Button Name="GroupCreateButton" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="0"
+          Margin="10,0" VerticalAlignment="Stretch">
+          <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Label>New Group</Label>
+          </Viewbox>
+        </Button>
+        <Button Name="JoinGroupButton" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="0"
+          Margin="10,0" VerticalAlignment="Stretch">
+          <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Label>Join Group</Label>
+          </Viewbox>
+        </Button>
+        <Button Name="AccountButton" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="0"
+          Margin="10,0" VerticalAlignment="Stretch">
+          <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Label>Account</Label>
+          </Viewbox>
+        </Button>
+        <TextBox Name="SearchBar" AcceptsReturn="False" AcceptsTab="False" Watermark="Search"
+          TextWrapping="NoWrap"
+          Grid.Row="1"
+          Grid.Column="0"
+          Grid.ColumnSpan="4"
+          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+          VerticalContentAlignment="Stretch"
+          MinHeight="10"
+          FontSize="20"
+          HorizontalContentAlignment="Stretch">
+
+        </TextBox>
+
+
+      </Grid>
+      <Grid Grid.Row="2" Background="Purple" Grid.Column="0" Grid.ColumnSpan="3" Name="ContactsGrid"
+        VerticalAlignment="Stretch"></Grid>
+    </Grid>
+  </Grid>
 </UserControl>

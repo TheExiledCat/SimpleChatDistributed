@@ -1,0 +1,3 @@
+[submodule "Avalonia.SimpleRouter"]
+	path = Avalonia.SimpleRouter
+	url = git@github.com:sandreas/Avalonia.SimpleRouter.git

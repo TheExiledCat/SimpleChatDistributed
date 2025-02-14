@@ -16,4 +16,5 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
     <ContentControl Content="{Binding Content}"></ContentControl>
+
 </Window>
