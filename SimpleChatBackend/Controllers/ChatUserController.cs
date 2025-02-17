@@ -1,5 +1,7 @@
+using Dumpify;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SimpleChatShared;
 using SimpleChatShared.DTOS;
 
@@ -36,31 +38,35 @@ namespace SimpleChatBackend.Controllers
             return Ok(new LoginDTO { Id = user.Id, Token = user.Token });
         }
 
-        [HttpGet("validate")]
-        public IActionResult Validate(int id, string token)
+        [HttpGet("valuserIdate")]
+        public IActionResult ValuserIdate(int userId, string token)
         {
-            ChatUser? user = context.ChatUsers.FirstOrDefault(u => u.Id == id && u.Token == token);
+            ChatUser? user = context.ChatUsers.FirstOrDefault(u =>
+                u.Id == userId && u.Token == token
+            );
             if (user == null)
             {
-                return Unauthorized("invalid token");
+                return Unauthorized("invaluserId token");
             }
             return Ok();
         }
 
-        [HttpGet("id/{id}")]
+        [HttpGet("userId/{userId}")]
         [RequireLogin]
-        public IActionResult Get(int id, string token)
+        public IActionResult Get(int userId, string token)
         {
-            ChatUser? user = context.ChatUsers.FirstOrDefault(u => u.Id == id && u.Token == token);
-            return user == null ? BadRequest("user id invalid") : Ok(user);
+            ChatUser? user = context.ChatUsers.FirstOrDefault(u =>
+                u.Id == userId && u.Token == token
+            );
+            return user == null ? BadRequest("user userId invaluserId") : Ok(user);
         }
 
         [HttpPost("add/{email}")]
         [RequireLogin]
-        public IActionResult AddContact(string email, int id, string token)
+        public IActionResult AddContact(string email, int userId, string token)
         {
             ChatUser? current = context.ChatUsers.FirstOrDefault(c =>
-                c.Id == id && c.Token == token
+                c.Id == userId && c.Token == token
             );
             if (current == null)
             {
@@ -71,6 +77,59 @@ namespace SimpleChatBackend.Controllers
             {
                 return StatusCode(409, "Contact email not found");
             }
+            if (
+                context.ChatContacts.Any(c =>
+                    (c.UserA == current && c.UserB == contact)
+                    || c.UserA == contact && c.UserB == current
+                )
+            )
+            {
+                return StatusCode(409, "Contact already exists");
+            }
+            ChatContact newContact = new ChatContact() { UserA = current, UserB = contact };
+            context.ChatContacts.Add(newContact);
+            context.SaveChanges();
+            return Ok(new ContactAddedDTO(email));
+        }
+
+        [HttpGet("contacts/{userId}")]
+        [RequireLogin]
+        public IActionResult GetContacts(int userId, string token)
+        {
+            ChatUser? user = context.ChatUsers.FirstOrDefault(u =>
+                u.Id == userId && u.Token == token
+            );
+            if (user == null)
+            {
+                return Unauthorized("You are not logged in or your user account was deleted");
+            }
+            ContactDTO[] contacts = context
+                .ChatContacts.Include(c => c.UserA)
+                .Include(c => c.UserB)
+                .Where(c => c.UserA.Id == user.Id || c.UserB.Id == user.Id)
+                .ToArray()
+                .Select(c =>
+                {
+                    ChatUser other = c.UserA.Id == user.Id ? c.UserB : c.UserA;
+                    other.Dump();
+                    return new ContactDTO
+                    {
+                        Name = other.Name,
+                        Email = other.Email,
+                        Bio = other.Bio,
+                        AvatarUri = other.AvatarUri,
+                        ContactsSince = c.ContactsSince,
+                        LastMessages = context
+                            .ChatMessages.Where(m => m.Room.Id == c.PrivateRoom.Id)
+                            .OrderBy(m => m.SentAt)
+                            .ToArray()
+                            .TakeLast(25)
+                            .ToArray(),
+                    };
+                })
+                .ToArray();
+
+            return Ok(contacts);
         }
     }
 }

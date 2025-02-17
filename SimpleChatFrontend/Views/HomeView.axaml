@@ -5,6 +5,9 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:vm="using:SimpleChatFrontend.ViewModels"
+  xmlns:dto="using:SimpleChatShared.DTOS"
+  xmlns:i="https://github.com/projektanker/icons.avalonia"
+  xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d" x:DataType="vm:HomeViewModel">
@@ -17,74 +20,136 @@
 
       </ColumnDefinition>
     </Grid.ColumnDefinitions>
-
-    <Grid Grid.Column="0" Margin="0,0,10,0" Background="Green">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="18*"></RowDefinition>
-        <RowDefinition Height="2*"></RowDefinition>
-        <RowDefinition Height="74*"></RowDefinition>
-        <RowDefinition Height="2*"></RowDefinition>
-
-      </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="5*"></ColumnDefinition>
-        <ColumnDefinition Width="90*"></ColumnDefinition>
-        <ColumnDefinition Width="5*"></ColumnDefinition>
-      </Grid.ColumnDefinitions>
-      <Grid Grid.Row="0" Background="Blue" Grid.Column="1" Name="TopButtonGrid" Margin="0,30"
-        HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*"></ColumnDefinition>
-          <ColumnDefinition Width="1*"></ColumnDefinition>
-          <ColumnDefinition Width="1*"></ColumnDefinition>
-          <ColumnDefinition Width="1*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Border BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0">
+      <Grid Grid.Column="0">
         <Grid.RowDefinitions>
-          <RowDefinition Height="3*"></RowDefinition>
-          <RowDefinition Height="1*"></RowDefinition>
+          <RowDefinition Height="18*"></RowDefinition>
+          <RowDefinition Height="2*"></RowDefinition>
+          <RowDefinition Height="74*"></RowDefinition>
+          <RowDefinition Height="5*"></RowDefinition>
+
         </Grid.RowDefinitions>
-        <Button Name="AddContactButton" Grid.Column="0" HorizontalAlignment="Stretch" Grid.Row="0"
-          Margin="10,0" VerticalAlignment="Stretch" Command="{Binding AddContact}">
-          <Viewbox HorizontalAlignment="Stretch">
-            <Label>Add Contact</Label>
-          </Viewbox>
-        </Button>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="5*"></ColumnDefinition>
+          <ColumnDefinition Width="90*"></ColumnDefinition>
+          <ColumnDefinition Width="5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BorderBrush="Gray"
+          BorderThickness="0,0,0,1" Padding="10">
+          <Grid Name="TopButtonGrid" Margin="0,30"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*"></ColumnDefinition>
+              <ColumnDefinition Width="1*"></ColumnDefinition>
+              <ColumnDefinition Width="1*"></ColumnDefinition>
+              <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="3*"></RowDefinition>
+              <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Name="AddContactButton" Grid.Column="0" HorizontalAlignment="Stretch"
+              Grid.Row="0"
+              Margin="10,0" VerticalAlignment="Stretch" Command="{Binding AddContact}">
+              <Viewbox HorizontalAlignment="Stretch">
+                <Label>Add Contact</Label>
+              </Viewbox>
+            </Button>
 
-        <Button Name="GroupCreateButton" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="0"
-          Margin="10,0" VerticalAlignment="Stretch">
-          <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Label>New Group</Label>
-          </Viewbox>
-        </Button>
-        <Button Name="JoinGroupButton" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="0"
-          Margin="10,0" VerticalAlignment="Stretch">
-          <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Label>Join Group</Label>
-          </Viewbox>
-        </Button>
-        <Button Name="AccountButton" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="0"
-          Margin="10,0" VerticalAlignment="Stretch">
-          <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Label>Account</Label>
-          </Viewbox>
-        </Button>
-        <TextBox Name="SearchBar" AcceptsReturn="False" AcceptsTab="False" Watermark="Search"
-          TextWrapping="NoWrap"
-          Grid.Row="1"
-          Grid.Column="0"
-          Grid.ColumnSpan="4"
-          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-          VerticalContentAlignment="Stretch"
-          MinHeight="10"
-          FontSize="20"
-          HorizontalContentAlignment="Stretch">
+            <Button Name="GroupCreateButton" Grid.Column="1" HorizontalAlignment="Stretch"
+              Grid.Row="0"
+              Margin="10,0" VerticalAlignment="Stretch">
+              <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label>New Group</Label>
+              </Viewbox>
+            </Button>
+            <Button Name="JoinGroupButton" Grid.Column="2" HorizontalAlignment="Stretch"
+              Grid.Row="0"
+              Margin="10,0" VerticalAlignment="Stretch">
+              <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label>Join Group</Label>
+              </Viewbox>
+            </Button>
+            <Button Name="AccountButton" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="0"
+              Margin="10,0" VerticalAlignment="Stretch">
+              <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label>Account</Label>
+              </Viewbox>
+            </Button>
+            <TextBox Name="SearchBar" AcceptsReturn="False" AcceptsTab="False" Watermark="Search"
+              TextWrapping="NoWrap"
+              Grid.Row="1"
+              Grid.Column="0"
+              Grid.ColumnSpan="4"
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              VerticalContentAlignment="Stretch"
+              MinHeight="10"
+              FontSize="20"
+              HorizontalContentAlignment="Stretch">
 
-        </TextBox>
+            </TextBox>
 
 
+          </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1"
+          BorderBrush="Gray" Margin="0">
+          <Grid Name="ContactsGrid"
+            VerticalAlignment="Stretch">
+            <ItemsControl ItemsSource="{Binding Contacts}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="dto:ContactDTO">
+                  <Border BorderThickness="0,1,0,1" BorderBrush="Gray" PointerPressed="SelectRoom"
+                    Cursor="Hand" Background="Transparent"
+                  >
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*">
+                        </ColumnDefinition>
+                        <ColumnDefinition Width="3*">
+                        </ColumnDefinition>
+                      </Grid.ColumnDefinitions>
+                      <Border Padding="15">
+                        <Viewbox Grid.Column="0">
+                          <Ellipse
+                            Width="50"
+                            Height="50"
+                            Stroke="Gray"
+                            StrokeThickness="1"
+                            VerticalAlignment="Stretch"
+                          >
+                            <Ellipse.Fill>
+                              <ImageBrush
+                                Source="/Assets/avalonia-logo.ico"
+                              />
+                            </Ellipse.Fill>
+                          </Ellipse>
+                        </Viewbox>
+                      </Border>
+
+                      <StackPanel Grid.Column="1">
+                        <Label Content="{Binding Name}" FontSize="24"></Label>
+                        <Label Content="{Binding Email}" FontSize="10"></Label>
+                        <TextBlock Text="{Binding LastMessages[0],FallbackValue=No message history}"
+                          FontStyle="Italic"></TextBlock>
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Grid>
+        </Border>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="3"
+          Grid.Column="0" Grid.ColumnSpan="3">
+          <Button i:Attached.Icon="fa-solid fa-sign-out" VerticalAlignment="Stretch"
+            FontSize="24" HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch" ToolTip.Tip="Logout" Command="{Binding SignOut}" />
+        </StackPanel>
       </Grid>
-      <Grid Grid.Row="2" Background="Purple" Grid.Column="0" Grid.ColumnSpan="3" Name="ContactsGrid"
-        VerticalAlignment="Stretch"></Grid>
-    </Grid>
+    </Border>
+    <ContentControl Content="{Binding Content}" Grid.Column="1"></ContentControl>
   </Grid>
 </UserControl>

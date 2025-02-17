@@ -1,5 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.SimpleRouter.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SimpleChatFrontend.ViewModels;
 
-public class ViewModelBase : ObservableValidator { }
+public abstract partial class ViewModelBase : ObservableValidator, ISimpleRoute<ViewModelBase>
+{
+    [ObservableProperty]
+    private ViewModelBase? content = default;
+}

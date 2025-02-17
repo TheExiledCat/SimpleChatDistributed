@@ -46,14 +46,17 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
         // Add the HistoryRouter as a service
-        services.AddSingleton<HistoryRouter<ViewModelBase>>(s => new HistoryRouter<ViewModelBase>(
-            t => (ViewModelBase)s.GetRequiredService(t)
-        ));
+        services.AddSingleton<NestedHistoryRouter<ViewModelBase, MainWindowViewModel>>(
+            s => new NestedHistoryRouter<ViewModelBase, MainWindowViewModel>(t =>
+                (ViewModelBase)s.GetRequiredService(t)
+            )
+        );
 
         // Add the ViewModels as a service (Main as singleton, others as transient)
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<HomeViewModel>();
+        services.AddTransient<ChatViewModel>();
         return services.BuildServiceProvider();
     }
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using Avalonia;
 using dotenv.net;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.FontAwesome;
 
 namespace SimpleChatFrontend;
 
@@ -14,6 +16,10 @@ sealed class Program
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 
     // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp() =>
-        AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().LogToTrace();
+    public static AppBuilder BuildAvaloniaApp()
+    {
+        IconProvider.Current.Register<FontAwesomeIconProvider>();
+
+        return AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().LogToTrace();
+    }
 }

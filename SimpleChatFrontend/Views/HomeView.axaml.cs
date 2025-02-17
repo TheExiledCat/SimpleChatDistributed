@@ -1,9 +1,14 @@
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.SimpleRouter;
 using Avalonia.Threading;
 using Dumpify;
+using SimpleChatFrontend.ViewModels;
+using SimpleChatShared;
+using SimpleChatShared.DTOS;
 
 namespace SimpleChatFrontend.Views;
 
@@ -11,24 +16,12 @@ public partial class HomeView : UserControl
 {
     public HomeView()
     {
-        App.Toplevel.Resized += (sender, args) => Resize();
-
         InitializeComponent();
-        Dispatcher.UIThread.Post(Resize, DispatcherPriority.Background);
     }
 
-    void Resize()
+    public void SelectRoom(object sender, PointerPressedEventArgs args)
     {
-        List<Button> buttons =
-        [
-            AccountButton,
-            GroupCreateButton,
-            JoinGroupButton,
-            AddContactButton,
-        ];
-        buttons.ForEach(b =>
-        {
-            b.CornerRadius = new CornerRadius(b.Bounds.Width);
-        });
+        ContactDTO contact = ((Control)sender).DataContext as ContactDTO;
+        ((HomeViewModel)DataContext).SelectRoom(contact);
     }
 }

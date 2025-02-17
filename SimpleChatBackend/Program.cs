@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using SimpleChatShared;
 
@@ -25,12 +26,22 @@ public class Program
                 config.UseNpgsql(builder.Configuration.GetConnectionString("DevelopmentDb"));
             }
         );
+        builder.Services.AddHttpLogging(
+            (o) =>
+            {
+                o.LoggingFields =
+                    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.All
+                    | HttpLoggingFields.RequestQuery;
+            }
+        );
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
+            app.UseHttpLogging();
+
             app.UseSwaggerUI();
         }
 

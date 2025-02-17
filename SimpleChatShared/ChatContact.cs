@@ -7,6 +7,6 @@ public class ChatContact
     public int Id { get; set; }
     public ChatUser UserA { get; set; }
     public ChatUser UserB { get; set; }
-    public DateTime ContactsSince { get; set; }
+    public DateTime ContactsSince { get; set; } = DateTime.UtcNow;
     public ChatRoom PrivateRoom { get; set; } = new ChatRoom();
 }

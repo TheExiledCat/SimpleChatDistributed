@@ -32,12 +32,12 @@ public partial class LoginViewModel : ViewModelBase
     [ObservableProperty]
     [Required]
     private string name;
-    HistoryRouter<ViewModelBase> router;
+    NestedHistoryRouter<ViewModelBase, MainWindowViewModel> router;
 
     [ObservableProperty]
     bool registerMode = false;
 
-    public LoginViewModel(HistoryRouter<ViewModelBase> _router)
+    public LoginViewModel(NestedHistoryRouter<ViewModelBase, MainWindowViewModel> _router)
     {
         router = _router;
     }
